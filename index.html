@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crusheed</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        #intro {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background-color: black;
+            transition: opacity 1s ease-out;
+        }
+
+        #intro h1 {
+            color: white;
+            font-size: 10vw;
+            /* Gigante */
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        #video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            /* Flex para centrar si es necesario, o block para full */
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            opacity: 0;
+            /* Invisible al principio */
+            transition: opacity 1s ease-in;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Pantalla inicial de "Crusheed" -->
+    <div id="intro" style="flex-direction: column; cursor: pointer;">
+        <h1>CRUSHEED</h1>
+        <p style="color: white; font-family: 'Arial', sans-serif; margin-top: 20px; font-size: 1.5rem;">Haz click para
+            empezar</p>
+    </div>
+
+    <!-- Contenedor del video -->
+    <div id="video-container">
+        <!-- Video local. Asegúrate de que el archivo se llame "video.mp4" y esté en la misma carpeta -->
+        <video id="player" style="width: 100%; height: 100%; object-fit: cover;">
+            <source src="video.mp4" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+    </div>
+
+    <script>
+        const videoPlayer = document.getElementById('player');
+        const intro = document.getElementById('intro');
+
+        // Al hacer click en la pantalla de intro
+        intro.addEventListener('click', function () {
+            // Evitar múltiples clicks
+            this.style.pointerEvents = 'none';
+            // Opcional: Feedback visual de que se ha hecho click (fade out cursor or text change)
+
+            // Esperamos 1 segundo y luego iniciamos la transición
+            setTimeout(() => {
+                startTransition();
+            }, 1000);
+        });
+
+        function startTransition() {
+            const videoContainer = document.getElementById('video-container');
+
+            // Desvanecer el texto
+            intro.style.opacity = '0';
+
+            // Mostrar y reproducir el video
+            videoContainer.style.opacity = '1';
+
+            // Reproducir el video local
+            // Como viene de un evento de click, el sonido DEBERÍA funcionar sin problemas.
+            videoPlayer.play().catch(e => {
+                console.error("Error al reproducir el video:", e);
+            });
+
+            // Ocultar el div de intro completamente después de la transición
+            setTimeout(() => {
+                intro.style.display = 'none';
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
